@@ -1,11 +1,11 @@
 {
-    "name": "jedlynch/seeder",
+    "name": "seedatlas/seeder",
     "description": "seeds database based on information scheme",
     "type": "libray",
     "authors": [
         {
             "name": "Jed Lynch",
-            "email": "jed_lynch@ziffdavis.com"
+            "email": "jedlynch@gmail.com"
         }
     ],
     "require": {},
