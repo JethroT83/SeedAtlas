@@ -1,9 +1,5 @@
 <?php
 
-namespace app;
-
-use App\SeedTable;
-use App\SeedData;
 class Seeder{
 
 	/**
@@ -30,7 +26,12 @@ class Seeder{
 		}
 	}
 
-	public static function get($table){
+	public static function get($sql){
+		$r = self::$connection->query($sql);
+		return  $r->fetch_all(MYSQLI_ASSOC);
+	}
+
+	public static function getColumnInfo($table){
 
 		$sql = "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, 
 						NUMERIC_SCALE, IS_NULLABLE, COLUMN_KEY, EXTRA
@@ -40,8 +41,8 @@ class Seeder{
 		$r = self::$connection->query($sql);
 		$result =  $r->fetch_all(MYSQLI_ASSOC);
 
-		if(!isset($result[0])){
-			die($table ." doesn't exist in the database.");
+		if(count($result) == 0){
+			die($table ." doesn't exist in the database.\n");
 		}else{
 			return $result;
 		}

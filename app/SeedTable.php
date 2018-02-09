@@ -1,7 +1,4 @@
 <?php
-namespace app;
-
-use App\Randomizer;
 
 class SeedTable{
 
@@ -88,10 +85,15 @@ class SeedTable{
 				$columnName = $row['COLUMN_NAME'];
 				$table = $this->table;
 
-				$sql = "SELECT max($columnName) as `id` FROM $table";
+				$sql = "SELECT max($columnName) as `maxId` FROM `$table`";
 				$data = Seeder::get($sql);
 
-				return $data[0]['id'];
+				if(count($data) == 0){
+					return 0;
+				}else{
+					return $data[0]['maxId'];
+				}
+				
 			}
 		}
 
@@ -186,7 +188,7 @@ class SeedTable{
 
 	public function seed(){
 
-		$this->columnData = Seeder::get($this->table);
+		$this->columnData = Seeder::getColumnInfo($this->table);
 
 		$this->seedMaker();
 
