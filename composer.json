@@ -2,6 +2,7 @@
     "name": "seedatlas/seeder",
     "description": "seeds database based on information scheme",
     "type": "libray",
+    "license":"MIT",
     "authors": [
         {
             "name": "Jed Lynch",
