@@ -3,38 +3,38 @@
 class SeedTable{
 
 
-	/*
+	/**
 	*	seeds the table
 	*	@param string
 	*/
 	public $table;
 
-	/*
+	/**
 	*	User inputs
 	*	@param array
 	*/
 	public $params;
 
-	/*
+	/**
 	*	sets number of records seeded
 	*	If false, defers to the params
 	*	@param int
 	*/
 	public $records = false;
 
-	/*
+	/**
 	*	If false, nullable fields will not be seeded when there is no params
-	*	@boonlean
+	*	@param boolean
 	*/
 	public $seedNullable = false;
 
-	/*
+	/**
 	*	The attributes of each column
 	*	@param array
 	*/
 	private $columnData;
 
-	/*
+	/**
 	*	stores all the seed data
 	*	@param array
 	*/

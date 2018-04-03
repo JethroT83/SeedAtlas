@@ -42,7 +42,7 @@ class SeederTest extends TestCase
 
     public function testSeeder(){
 
-    	Seeder::setConnection(self::$creds['host'], self::$creds['user'],self::$creds['pass'],self::$creds['database']);
+        Seeder::setConnection(self::$creds['host'], self::$creds['user'],self::$creds['pass'],self::$creds['database']);
 
 		$data =  Seeder::Table("user")
 					->params([
@@ -53,6 +53,29 @@ class SeederTest extends TestCase
 
 		$this->assertEquals(2, count($data), "There should be two records seeded.");
 		$this->assertEquals("John Doe", $data[0]['first_name'],"The first record first name should match the params.");
+
+    }
+
+
+    public function testJoin(){
+
+        Seeder::setConnection(self::$creds['host'], self::$creds['user'],self::$creds['pass'],self::$creds['database']);
+
+        $postTable = Seeder::Table("post")->on("user_id")->records(4);
+
+        $data  = Seeder::Table("user")
+                    ->params([
+                        "id"=>$postTable
+                    ])
+                    ->seed()
+                    ->getSeedData();
+
+       $q = "SELECT * FROM user u
+            INNER JOIN post p ON u.id = p.userid";
+
+        $r = Seeder::get($q);        
+
+        $this->assertEquals(4, count($r),"Should be four post records to one post user.");
 
     }
 }
