@@ -24,7 +24,7 @@ class Randomizer{
 				return self::randomizeString($length);
 
 			case in_array($dataType,$dateTypes):
-				return self::randomDate($dataType);
+				return self::randomizeDate($dataType);
 
 			//case in_array($dataType,$blobTypes):
 				// not necessary for now

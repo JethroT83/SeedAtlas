@@ -64,16 +64,18 @@ class SeederTest extends TestCase
         $postTable = Seeder::Table("post")->on("user_id")->records(4);
 
         $data  = Seeder::Table("user")
-                    ->params([
+                    ->param([
                         "id"=>$postTable
                     ])
+                    ->records(1)
                     ->seed()
                     ->getSeedData();
 
-       $q = "SELECT * FROM user u
-            INNER JOIN post p ON u.id = p.userid";
+       $q = "SELECT * 
+                FROM user u
+                INNER JOIN post p ON u.id = p.user_id";
 
-        $r = Seeder::get($q);        
+        $r = Seeder::get($q);
 
         $this->assertEquals(4, count($r),"Should be four post records to one post user.");
 
