@@ -161,26 +161,6 @@ class SeedTable{
 		}
 	}
 
-	/*private function toHelper($child, $column){
-							
-		switch(true){
-			case ($column['EXTRA'] == "auto_increment"):
-
-				$id  	= $autoId + $row +1;
-				$data  	= $child->rule([$child->on=>$id])
-								->seed()
-								->getSeedData();
-				$ret = $id;
-				
-			default:
-				$data = $child->seed()->getSeedData();
-				$ret  = $data[0][$child->on];
-		}	
-
-		return $ret;
-	}*/
-
-
 	private function seedMaker(){
 
 		$autoId = $this->getLastAutoIncrement();
@@ -199,9 +179,6 @@ class SeedTable{
 
 						$child = $this->on[$columnName];
 
-#file_put_contents("child_".$columnName.$r.".txt", json_encode($this,JSON_PRETTY_PRINT));
-#echo "\n".__LINE__."--WTF mate??";
-						//$rowData[$columnName] = $this->toHelper($child,$column);
 						if ($column['EXTRA'] == "auto_increment"){
 
 							$id  			= $autoId + $row +1;
@@ -210,52 +187,13 @@ class SeedTable{
 												->getSeedData();
 
 							$rowData[$columnName] = $id;
-#file_put_contents("child_".$columnName.$r.".txt", json_encode($childData,JSON_PRETTY_PRINT));									
+							
 						}else{
-$r = rand(1,1000);
-							//$childData = [0=>[$child->on]];
+
 							$childData = $child->seed()->getSeedData();
-#file_put_contents("child_".$columnName.$r.".txt", json_encode($childData,JSON_PRETTY_PRINT));	
-							#$rowData[$columnName]  = $childData[0][$child->on];
-
-							$index = $row * $i;
-
-							//if(isset($this->seedData[$this->table][$index][$child->to])){
-							//	$rowData[$columnName]  = $this->seedData[$child->table][$index][$child->to];
-							//}else{
-
-								//option to enforce all relationships ??? 
-
-								//$rowData[$columnName]  = $this->seedData[$child->table][$index][$child->to];
-								$rowData[$columnName] = "";
-							//}
 						}
 
-						//$data[$columnName] = $childData;
-						//$rowData[$columnName] = $childData;
-
 						break;
-
-					//Child -- Join values are inherited from the eldest sibling
-					/*case (isset($this->to) && $columnName == $this->to):
-						
-						$index = $row * $i;
-
-						#if(count($seedData)>0){
-							if(isset($this->seedData[$this->table][$index][$child->to])){
-								$rowData[$columnName]  = $this->seedData[$this->table][$index][$child->to];
-							}else{
-
-								//option to enforce all relationships ??? 
-
-								$rowData[$columnName]  = $this->seedData[$this->table][$index][$child->to];
-							}
-						#}else{
-						#	$rowData[$columnName] = Randomizer::randomize($column);
-						#}
-
-						break;*/
-
 
 					case isset($this->rule[$columnName]):
 						$rowData[$columnName] = $this->rule[$columnName];
@@ -272,11 +210,6 @@ $r = rand(1,1000);
 
 						$rowData[$columnName] = $autoId + $row +1;
 						break;
-
-
-
-
-
 
 					case ($column['COLUMN_KEY'] == "PRI" || $column['COLUMN_KEY'] == "UNI"):
 						// everthing must be unique
@@ -302,8 +235,6 @@ $r = rand(1,1000);
 
 	public function queryBuilder(){
 
-#echo "\n".__LINE__."<--table-->".$this->table."<--columnData-->".json_encode($this->columnData,JSON_PRETTY_PRINT);
-#echo "\n".__LINE__."--seedData-->".json_encode($this->seedData['user'],JSON_PRETTY_PRINT);
 		$q = "INSERT INTO `{$this->table}` ";
 		foreach($this->seedData[$this->table] as $i => $row){
 			foreach($this->columnData as $j => $column){
@@ -337,7 +268,7 @@ $r = rand(1,1000);
 	public function seed(){
 
 		$this->columnData = Seeder::getColumnInfo($this->table);
-#file_put_contents($this->table.".txt", json_encode($this->columnData,JSON_PRETTY_PRINT));
+
 		$this->seedMaker();
 
 		$q = $this->queryBuilder();
