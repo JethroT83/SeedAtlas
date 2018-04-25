@@ -41,7 +41,16 @@ class SeederTestMigration extends AbstractMigration
         $table = $this->table('post');
         $table
             ->addColumn('user_id', 'integer', array('limit' => 11))
+            //->addColumn('image_id', 'integer', array('limit'=>11))
             ->addColumn('post', 'text', ['limit' => 'TEXT_LONG'])
+            ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
+            ->create();
+
+        $table = $this->table('image');
+        $table
+            ->addColumn('post_id', 'integer', ['limit'=>11])
+            ->addColumn('title', 'string', ['limit' => 100])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
             ->create();
@@ -63,6 +72,13 @@ class SeederTestMigration extends AbstractMigration
         $table
             ->addColumn('user_id', 'integer', array('limit' => 11))
             ->addColumn('post', 'text', ['limit' => 'TEXT_LONG'])
+            ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
+            ->create();
+            
+        $table = $this->table('image');
+        $table
+            ->addColumn('title', 'string', ['limit' => 100])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
             ->create();

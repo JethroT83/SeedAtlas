@@ -40,7 +40,7 @@ class SeederTest extends TestCase
     }
 
 
-    public function testSeeder(){
+    /*public function testSeeder(){
 
         Seeder::setConnection(self::$creds['host'], self::$creds['user'],self::$creds['pass'],self::$creds['database']);
 
@@ -61,16 +61,16 @@ class SeederTest extends TestCase
 
         Seeder::setConnection(self::$creds['host'], self::$creds['user'],self::$creds['pass'],self::$creds['database']);
 
-        $postTable = Seeder::Table("post")->on("user_id")->records(4);
+        $postTable = Seeder::Table("post")->to("user_id")->records(4);
 
         $data  = Seeder::Table("user")
-                    ->param([
+                    ->on([
                         "id"=>$postTable
                     ])
                     ->records(1)
                     ->seed()
                     ->getSeedData();
-
+    
        $q = "SELECT * 
                 FROM user u
                 INNER JOIN post p ON u.id = p.user_id";
@@ -78,6 +78,36 @@ class SeederTest extends TestCase
         $r = Seeder::get($q);
 
         $this->assertEquals(4, count($r),"Should be four post records to one post user.");
+
+    }*/
+
+    public function testJoinOnJoin(){
+
+        Seeder::setConnection(self::$creds['host'],self::$creds['user'],self::$creds['pass'],self::$creds['database']);
+
+            $image = Seeder::Table("image");
+            $post = Seeder::Table("post");
+            $user = Seeder::Table("user");
+
+            $data = $user->on([
+                                "id"=> $post->to("user_id")
+                                            ->on(["id"=> $image->to("post_id")
+                                                                    ->records(4)
+                                                 ])->records(4)
+                            ])
+                        ->records(2)
+                        ->seed()
+                        ->getSeedData();
+
+
+           $q = "SELECT * 
+                    FROM user u
+                    INNER JOIN post p ON u.id = p.user_id
+                    INNER JOIN image i ON p.id = i.post_id";
+
+            $r = Seeder::get($q);
+
+            $this->assertEquals(32, count($r),"Should be four post records to one post user.");
 
     }
 }
